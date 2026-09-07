@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* ── Tailwind v4: theme tokens defined in CSS ────────────────────────────── */
+@theme {
+  --font-family-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-family-mono: 'Fira Code', 'Cascadia Code', monospace;
+
+  --color-surface:    #0f0f14;
+  --color-surface-1:  #16161f;
+  --color-surface-2:  #1e1e2e;
+  --color-surface-3:  #252535;
+
+  --color-accent-amber:  #f59e0b;
+  --color-accent-orange: #f97316;
+  --color-accent-blue:   #3b82f6;
+  --color-accent-violet: #8b5cf6;
+  --color-accent-green:  #22c55e;
+  --color-accent-red:    #ef4444;
+
+  --animate-fade-in: fadeIn 0.5s ease-out both;
+  --animate-float:   floatY 4s ease-in-out infinite;
+}
+
+/* ── Base reset ──────────────────────────────────────────────────────────── */
+html, body {
+  background-color: #0f0f14;
+  color: #e2e8f0;
+  font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
+  border-radius: 99px;
+}
+
+/* ── Utility classes (hand-crafted) ──────────────────────────────────────── */
+.glass {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 1rem;
+}
+
+.glow-blue {
+  box-shadow: 0 0 40px rgba(59,130,246,0.25), 0 0 80px rgba(59,130,246,0.1);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Focus visible ───────────────────────────────────────────────────────── */
+button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* ── Keyframes ───────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* ── Animation helpers ───────────────────────────────────────────────────── */
+.animate-fade-in { animation: fadeIn 0.5s ease-out both; }
+.animate-float   { animation: floatY 4s ease-in-out infinite; }
+
+.delay-100 { animation-delay: 0.10s; }
+.delay-200 { animation-delay: 0.20s; }
+.delay-300 { animation-delay: 0.30s; }
+.delay-400 { animation-delay: 0.40s; }
+.delay-500 { animation-delay: 0.50s; }
