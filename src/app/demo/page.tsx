@@ -17,12 +17,10 @@ export default function DemoPage() {
   const { snapshots, currentGen, status, initialize, play, pause, reset, tick } =
     useSimStore();
 
-  // ── Initialize once on mount ──────────────────────────────────────────────
   useEffect(() => {
     initialize();
   }, [initialize]);
 
-  // ── Animation loop (requestAnimationFrame + interval) ─────────────────────
   const rafRef = useRef<number | null>(null);
   const lastTickRef = useRef<number>(0);
 
@@ -46,6 +44,7 @@ export default function DemoPage() {
         rafRef.current = null;
       }
     }
+
     return () => {
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
@@ -53,7 +52,6 @@ export default function DemoPage() {
     };
   }, [status, animate]);
 
-  // ── Snapshot for current generation ──────────────────────────────────────
   const snapshot = snapshots[currentGen] ?? null;
 
   if (!snapshot) {
@@ -69,13 +67,11 @@ export default function DemoPage() {
 
   return (
     <main className="min-h-screen flex flex-col bg-surface relative overflow-hidden">
-      {/* ── Ambient glow ─────────────────────────────────────────────────── */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-blue-600/8 blur-[120px]" />
-        <div className="absolute bottom-[0%] right-[-5%] w-[400px] h-[400px] rounded-full bg-violet-600/8 blur-[100px]" />
+        <div className="absolute top-[-10%] left-[-5%] size-125 rounded-full bg-blue-600/8 blur-[120px]" />
+        <div className="absolute bottom-[0%] right-[-5%] size-100 rounded-full bg-violet-600/8 blur-[100px]" />
       </div>
 
-      {/* ── Top nav ──────────────────────────────────────────────────────── */}
       <header className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/6">
         <Link
           href="/"
@@ -87,18 +83,16 @@ export default function DemoPage() {
           </svg>
           Início
         </Link>
+
         <h1 className="text-sm font-semibold text-slate-300 tracking-wide">
           Algoritmo Cultural — Simulação
         </h1>
-        <div className="w-16" /> {/* spacer */}
+
+        <div className="w-16" />
       </header>
 
-      {/* ── Main content ─────────────────────────────────────────────────── */}
       <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 p-4 md:p-6 max-w-7xl mx-auto w-full">
-
-        {/* ── Left: canvas ─────────────────────────────────────────────── */}
         <div className="flex flex-col gap-4">
-          {/* Legend row */}
           <div className="flex items-center gap-4 flex-wrap text-xs text-slate-500">
             <LegendItem color="#fbbf24" label="Líder (melhor histórico)" shape="star" />
             <LegendItem color="#3b82f6" label="Intervalo normativo" shape="rect" />
@@ -111,12 +105,12 @@ export default function DemoPage() {
           </div>
         </div>
 
-        {/* ── Right: controls + chart ───────────────────────────────────── */}
         <div className="flex flex-col gap-4">
-          {/* Controls panel */}
           <div className="glass p-4 flex flex-col gap-4">
             <FixedParamsPanel />
+
             <hr className="border-white/6" />
+
             <SimulationControls
               generation={currentGen}
               bestFitness={snapshot.bestFitness}
@@ -127,40 +121,45 @@ export default function DemoPage() {
             />
           </div>
 
-          {/* Fitness chart */}
           <div className="glass p-4 flex flex-col gap-3 flex-1">
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-semibold text-slate-300">Evolução do Fitness</h2>
               <span className="text-xs text-slate-600">por geração</span>
             </div>
+
             <FitnessChart snapshots={snapshots} currentGen={currentGen} />
           </div>
 
-          {/* Belief space info card */}
           <div className="glass p-4 flex flex-col gap-3">
             <h2 className="text-sm font-semibold text-slate-300">Espaço de Crenças</h2>
+
             <div className="grid grid-cols-2 gap-2">
               <BeliefInfoItem
                 label="Líder x"
                 value={snapshot.beliefSpace.leader.x.toFixed(3)}
               />
+
               <BeliefInfoItem
                 label="Líder y"
                 value={snapshot.beliefSpace.leader.y.toFixed(3)}
               />
+
               <BeliefInfoItem
                 label="Fitness do líder"
                 value={snapshot.beliefSpace.leader.fitness.toFixed(4)}
                 highlight
               />
+
               <BeliefInfoItem
                 label="Média da geração"
                 value={snapshot.avgFitness.toFixed(4)}
               />
+
               <BeliefInfoItem
                 label="Normativo x"
                 value={`[${snapshot.beliefSpace.normativeRange.x[0].toFixed(1)}, ${snapshot.beliefSpace.normativeRange.x[1].toFixed(1)}]`}
               />
+
               <BeliefInfoItem
                 label="Normativo y"
                 value={`[${snapshot.beliefSpace.normativeRange.y[0].toFixed(1)}, ${snapshot.beliefSpace.normativeRange.y[1].toFixed(1)}]`}
@@ -172,8 +171,6 @@ export default function DemoPage() {
     </main>
   );
 }
-
-// ─── Sub-components ───────────────────────────────────────────────────────────
 
 function LegendItem({
   color,
@@ -189,9 +186,11 @@ function LegendItem({
       {shape === "circle" && (
         <span className="w-3 h-3 rounded-full border border-black/30" style={{ background: color }} />
       )}
+
       {shape === "rect" && (
         <span className="w-4 h-3 rounded-sm border-2" style={{ borderColor: color, background: "transparent" }} />
       )}
+
       {shape === "star" && (
         <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden>
           <path
@@ -200,6 +199,7 @@ function LegendItem({
           />
         </svg>
       )}
+
       {shape === "cross" && (
         <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden>
           <line x1="0" y1="6" x2="12" y2="6" stroke={color} strokeWidth="1.5" />
@@ -225,6 +225,7 @@ function BeliefInfoItem({
       <span className="text-[10px] uppercase tracking-wider text-slate-600 font-medium">
         {label}
       </span>
+
       <span
         className={`text-sm font-mono font-semibold tabular-nums ${
           highlight ? "text-green-400" : "text-slate-200"

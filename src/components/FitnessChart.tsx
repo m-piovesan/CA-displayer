@@ -41,16 +41,19 @@ export default function FitnessChart({ snapshots, currentGen }: Props) {
           margin={{ top: 8, right: 16, left: -16, bottom: 0 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+          
           <XAxis
             dataKey="gen"
             tick={{ fill: "#94a3b8", fontSize: 11 }}
             label={{ value: "Generation", position: "insideBottom", offset: -2, fill: "#64748b", fontSize: 11 }}
           />
+          
           <YAxis
             domain={[0, 1]}
             tick={{ fill: "#94a3b8", fontSize: 11 }}
             tickCount={6}
           />
+          
           <Tooltip
             contentStyle={{
               background: "#1e1e2e",
@@ -63,9 +66,11 @@ export default function FitnessChart({ snapshots, currentGen }: Props) {
             formatter={(value) => (typeof value === 'number' ? value.toFixed(4) : String(value))}
             labelFormatter={(label) => `Gen ${label}`}
           />
+          
           <Legend
             wrapperStyle={{ fontSize: 12, color: "#94a3b8", paddingTop: 4 }}
           />
+          
           <Line
             type="monotone"
             dataKey="best"
@@ -75,6 +80,7 @@ export default function FitnessChart({ snapshots, currentGen }: Props) {
             name="Best"
             isAnimationActive={false}
           />
+          
           <Line
             type="monotone"
             dataKey="avg"
@@ -85,6 +91,7 @@ export default function FitnessChart({ snapshots, currentGen }: Props) {
             strokeDasharray="4 2"
             isAnimationActive={false}
           />
+          
           <Line
             type="monotone"
             dataKey="worst"
