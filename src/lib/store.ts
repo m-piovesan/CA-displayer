@@ -3,11 +3,15 @@
 import { create } from "zustand";
 import { GenerationSnapshot } from "./ca-engine/types";
 import { precomputeAllSnapshots } from "./ca-engine/runCA";
+import { precomputeAllEASnapshots } from "./ea-engine/runEA";
 
 type SimStatus = "idle" | "playing" | "paused" | "done";
 
 interface SimStore {
+  // ── CA snapshots (original) ──────────────────────────────────────────────
   snapshots: GenerationSnapshot[];
+  // ── EA snapshots (new — for comparison) ─────────────────────────────────
+  eaSnapshots: GenerationSnapshot[];
   currentGen: number;
   status: SimStatus;
   // actions
@@ -20,12 +24,14 @@ interface SimStore {
 
 export const useSimStore = create<SimStore>((set, get) => ({
   snapshots: [],
+  eaSnapshots: [],
   currentGen: 0,
   status: "idle",
 
   initialize: () => {
     const snapshots = precomputeAllSnapshots();
-    set({ snapshots, currentGen: 0, status: "idle" });
+    const eaSnapshots = precomputeAllEASnapshots();
+    set({ snapshots, eaSnapshots, currentGen: 0, status: "idle" });
   },
 
   play: () => {

@@ -88,7 +88,12 @@ export default function DemoPage() {
           Algoritmo Cultural — Simulação
         </h1>
 
-        <div className="w-16" />
+        <Link
+          href="/compare"
+          className="text-sm text-amber-400 hover:text-amber-300 transition-colors font-medium"
+        >
+          CA vs EA →
+        </Link>
       </header>
 
       <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 p-4 md:p-6 max-w-7xl mx-auto w-full">

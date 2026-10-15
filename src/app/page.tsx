@@ -24,7 +24,7 @@ export default function HomePage() {
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium
             bg-violet-500/15 text-violet-300 border border-violet-500/25">
             <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-            Algoritmo Evolutivo · Visualização Interativa
+            Algoritmo Evolutivo · Visualização & Comparação
           </span>
         </div>
 
@@ -48,7 +48,7 @@ export default function HomePage() {
           guiados pelo líder e pelo intervalo normativo.
         </p>
 
-        <div className="animate-fade-in delay-300">
+        <div className="animate-fade-in delay-300 flex flex-col sm:flex-row items-center gap-4">
           <Link
             href="/demo"
             id="btn-ver-simulacao"
@@ -60,8 +60,22 @@ export default function HomePage() {
               transition-all duration-200 hover:scale-105 hover:shadow-xl hover:shadow-blue-900/50
               active:scale-100"
           >
-            Ver simulação
+            Ver simulação CA
             <ArrowRightIcon />
+          </Link>
+
+          <Link
+            href="/compare"
+            id="btn-comparar"
+            className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl
+              bg-amber-500/15 hover:bg-amber-500/25
+              border border-amber-500/30 hover:border-amber-500/50
+              text-amber-300 hover:text-amber-200 font-semibold text-lg
+              transition-all duration-200 hover:scale-105
+              active:scale-100"
+          >
+            Comparar CA vs EA
+            <CompareIcon />
           </Link>
         </div>
       </div>
@@ -82,6 +96,25 @@ function ArrowRightIcon() {
       aria-hidden
     >
       <path d="M4 10h12M10 4l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function CompareIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      className="transition-transform duration-200 group-hover:scale-110"
+      aria-hidden
+    >
+      <rect x="2" y="4" width="6" height="12" rx="1" />
+      <rect x="12" y="4" width="6" height="12" rx="1" />
+      <path d="M9 10h2" strokeLinecap="round" />
     </svg>
   );
 }
