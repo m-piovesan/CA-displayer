@@ -88,6 +88,10 @@ export function* runEA(): Generator<GenerationSnapshot> {
     // Same linear decay schedule as the CA's largeStep — fair comparison
     const step = STEP_LARGE * (1 - 0.4 * (gen / MAX_GEN));
 
+    const prevBest = population.reduce((b, i) =>
+      i.fitness > b.fitness ? i : b
+    );
+
     // Pure Gaussian mutation — no guidance whatsoever
     population = population.map((ind) => {
       const newX = clamp(ind.x + step * gaussian(rng));
@@ -95,11 +99,19 @@ export function* runEA(): Generator<GenerationSnapshot> {
       return { x: newX, y: newY, fitness: evaluate(newX, newY) };
     });
 
-    // Elitism: keep best individual from previous generation if no improvement
-    // (standard (μ + λ) selection lite — prevents fitness regression)
-    const currentBest = population.reduce((b, i) =>
-      i.fitness > b.fitness ? i : b
-    );
+    // Elitism: if the new generation lost the previous best, put it back in
+    // place of the worst individual (prevents best-fitness regression).
+    let bestIdx = 0;
+    let worstIdx = 0;
+    for (let i = 1; i < population.length; i++) {
+      if (population[i].fitness > population[bestIdx].fitness) bestIdx = i;
+      if (population[i].fitness < population[worstIdx].fitness) worstIdx = i;
+    }
+    if (population[bestIdx].fitness < prevBest.fitness) {
+      population[worstIdx] = { ...prevBest };
+      bestIdx = worstIdx;
+    }
+    const currentBest = population[bestIdx];
 
     // Stub belief space — leader tracks current best for the canvas marker
     const beliefSpaceStub = {
